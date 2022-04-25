@@ -62,6 +62,7 @@ contract P2P {
         view
         onlyIfItemExists(itemID)
         returns (
+            string memory image,
             bytes32 name,
             uint256 price,
             address seller,
@@ -69,7 +70,13 @@ contract P2P {
         )
     {
         Item storage item = _items[itemID];
-        return (item.name, item.price, item.seller, uint256(item.status));
+        return (
+            item.image,
+            item.name,
+            item.price,
+            item.seller,
+            uint256(item.status)
+        );
     }
 
     function getAllItem() public view returns (Item[] memory) {
