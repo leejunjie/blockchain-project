@@ -19,7 +19,6 @@ class App extends Component {
   currentPage = ({ isActive }) => ((isActive ? 'text-primary' : 'text-dark') + " px-4 py-2 text-decoration-none")
 
   render() {
-    console.log(this.props)
     return (
       <BrowserRouter>
         <div className='container'>
@@ -52,6 +51,12 @@ class App extends Component {
                 drizzleState={this.props.drizzleState}
               />
             } />
+            <Route exact path='/sell' element={
+              <AddProduct
+                drizzle={this.props.drizzle}
+                drizzleState={this.props.drizzleState}
+              />
+            } />
           </Routes>
         </div>
       </BrowserRouter>
@@ -65,25 +70,8 @@ class App extends Component {
         drizzle={this.props.drizzle}
         drizzleState={this.props.drizzleState}
       /> */}
-    {/* <Accounts
-        drizzle={this.props.drizzle}
-        drizzleState={this.props.drizzleState}
-        account={this.state.account}
-        handleChangeAcc={this.handleChangeAcc}
-      />
-      <GetProduct
-        drizzle={this.props.drizzle}
-        drizzleState={this.props.drizzleState}
-        account={this.state.account}
-      />
+    {/* 
       <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <div>
-          <AddProduct
-            drizzle={this.props.drizzle}
-            drizzleState={this.props.drizzleState}
-            account={this.state.account}
-          />
-        </div>
         <div>
           <BuyProduct
             drizzle={this.props.drizzle}

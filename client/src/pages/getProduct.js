@@ -37,7 +37,7 @@ class GetProduct extends React.Component {
 							if (item.status === "2") {
 								return "";
 							}
-							return <Link to={'/product?id=' + index} className="col-3 p-2 border text-decoration-none text-dark">
+							return <Link to={'/product?id=' + index} className="col-3 card text-decoration-none text-dark">
 								<div>
 									<img className="w-100" src={item.image || "/logo192.png"} />
 								</div>
