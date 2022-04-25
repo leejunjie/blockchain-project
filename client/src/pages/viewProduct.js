@@ -58,7 +58,7 @@ function ViewProduct(props) {
 				</div>
 				{product.status != "0" && <div className="col-12">
 					<div className="d-flex justify-content-center">
-						{product.status === "1" ? <p className="bg-success text-light px-3 py-2">Sold</p> : "Removed"}
+						{product.status === "1" ? <p className="bg-success text-light px-3 py-2">Sold</p> : <p className="bg-danger text-light px-3 py-2">Removed</p>}
 					</div>
 				</div>}
 			</div>
