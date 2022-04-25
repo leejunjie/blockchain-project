@@ -4,13 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 function ViewProduct(props) {
 	const [product, setProduct] = useState(null);
-	const { drizzle } = props;
+	const { drizzle, drizzleState } = props;
 	const contract = drizzle.contracts.P2P;
+	const account = drizzleState.accounts[0];
 	const query = new URLSearchParams(window.location.search);
 	const navigate = useNavigate();
+	const id = query.get("id") || "";
 
 	useEffect(() => {
-		const id = query.get("id") || "";
 		if (id) {
 			contract.methods.getItem(id).call({}, function (err, res) {
 				if (err) return err;
@@ -22,20 +23,11 @@ function ViewProduct(props) {
 		}
 	}, []);
 
-	// const removeItem = (id) => {
-	// 	const { drizzle, drizzleState } = this.props;
-	// 	const contract = drizzle.contracts.P2P;
-
-	// 	contract.methods["removeItem"].cacheSend(id, {
-	// 		from: drizzleState.accounts[0], gas: 3000000
-	// 	});
-	// }
-
-	// string image;
-	//      bytes32 name;
-	//      uint256 price;
-	//      address seller;
-	//      ItemStatus status;
+	const removeItem = () => {
+		contract.methods["removeItem"].cacheSend(id, {
+			from: drizzleState.accounts[0], gas: 3000000
+		});
+	}
 
 	return (product) ? (
 		<div>
@@ -56,11 +48,12 @@ function ViewProduct(props) {
 				<div className="col-12">
 					<p>Seller: {product.seller}</p>
 				</div>
-				{product.status != "0" && <div className="col-12">
+				{product.status != "0" ? <div className="col-12">
 					<div className="d-flex justify-content-center">
 						{product.status === "1" ? <p className="bg-success text-light px-3 py-2">Sold</p> : <p className="bg-danger text-light px-3 py-2">Removed</p>}
 					</div>
-				</div>}
+				</div>
+					: (product.seller === account && <button onClick={removeItem}>Remove</button>)}
 			</div>
 		</div>
 	) : <div></div>;
