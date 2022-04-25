@@ -37,18 +37,18 @@ class Accounts extends React.Component {
 	render() {
 		const { account } = this.props;
 		const addressLength = account.length;
-		// const { P2P } = this.props.drizzleState.contracts;
-		// const { dataKey } = this.state;
-		// const funds = P2P._pendingWithdrawals[dataKey];
-		// let btnFunds = "";
-		// if (funds && funds.value !== "0") {
-		// 	btnFunds = <button onClick={this.pullFunds}>Get Funds</button>
-		// }
+		const { P2P } = this.props.drizzleState.contracts;
+		const { dataKey } = this.state;
+		const funds = P2P._pendingWithdrawals[dataKey];
+		let btnFunds = "";
+		if (funds && funds.value !== "0") {
+			btnFunds = <button className="btn btn-primary mr-5" onClick={this.pullFunds}>Get Funds</button>
+		}
 
 		return (
 			<div className="py-2">
+				{btnFunds}
 				{account && (account.slice(0, 5) + "..." + account.slice(addressLength - 5, addressLength))}
-				{/* {btnFunds} */}
 			</div>
 		);
 	}

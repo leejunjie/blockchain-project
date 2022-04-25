@@ -1,21 +1,38 @@
 import React from "react";
 
 class AddProduct extends React.Component {
-	state = { name: "", price: "", image: "", stackId: null };
+	state = { name: "", price: "", image: { blob: "", base64: "" }, stackId: null };
 
 	selectedImage = (e) => {
-		this.setState({ image: URL.createObjectURL(e.target.files[0]) });
+		const image = e.target.files[0];
+		const imgBlob = URL.createObjectURL(image);
+
+		let reader = new FileReader()
+		reader.readAsDataURL(e.target.files[0])
+		reader.onload = () => {
+			this.setState({
+				image: {
+					blob: imgBlob,
+					base64: reader.result
+				}
+			})
+		};
+		reader.onerror = function (error) {
+			console.log('Error: ', error);
+		}
 	}
 
 	addItem = () => {
 		const { drizzle, account } = this.props;
 		const { name, price, image } = this.state;
+		const { blob, base64 } = image;
 		const contract = drizzle.contracts.P2P;
 
 		const nameToHex = contract.web3.utils.asciiToHex(name);
 		const weiValue = contract.web3.utils.toWei(price, "ether");
 		const stackId = contract.methods["addNewItem"].cacheSend(image, nameToHex, weiValue, {
-			from: account, gas: 3000000
+			from: account,
+			gas: 3000000
 		});
 		this.setState({ stackId });
 	}
@@ -31,6 +48,7 @@ class AddProduct extends React.Component {
 
 	render() {
 		const { image } = this.state;
+		const { blob } = image;
 		return (
 			<>
 				<div className="row mt-5 justify-content-around">
@@ -58,7 +76,7 @@ class AddProduct extends React.Component {
 						<input className="form-control" type="file" accept="image/*" onChange={this.selectedImage} />
 					</div>
 					<div className="col-3">
-						{image && <img src={image || ""} className="w-100" />}
+						{blob && <img src={blob || ""} className="w-100" />}
 					</div>
 					<div className="col-12">
 						<p>{this.getTxStatus()}</p>

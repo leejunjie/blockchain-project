@@ -37,13 +37,15 @@ class GetProduct extends React.Component {
 							if (item.status === "2") {
 								return "";
 							}
-							return <Link to={'/product?id=' + index} key={index} className="col-3 card text-decoration-none text-dark">
-								<div>
-									<img className="w-100" src={item.image || "/logo192.png"} />
-								</div>
-								<div className="d-flex justify-content-between">
-									<p className="mb-0">{contract.web3.utils.hexToAscii(item.name).replace(/\u0000/g, '')}</p>
-									<p className="mb-0">{item.status === "1" ? "Sold" : (contract.web3.utils.fromWei(item.price, "ether") + " ETH")}</p>
+							return <Link to={'/product?id=' + index} key={index} className="col-3 text-decoration-none text-dark">
+								<div className="card p-2">
+									<div>
+										<img className="w-100" src={item.image || "/logo192.png"} />
+									</div>
+									<div className="d-flex justify-content-between">
+										<p className="mb-0">{contract.web3.utils.hexToAscii(item.name).replace(/\u0000/g, '')}</p>
+										<p className="mb-0">{item.status === "1" ? "Sold" : (contract.web3.utils.fromWei(item.price, "ether") + " ETH")}</p>
+									</div>
 								</div>
 							</Link>
 						})}
