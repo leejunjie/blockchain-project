@@ -16,59 +16,54 @@ class Accounts extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		const { account } = this.props;
+		const { drizzleState } = this.props;
 		const { dataKey } = this.state;
-		if ((account && !dataKey) || prevProps.account !== account) {
+		const account = drizzleState.accounts[0];
+		const prevAccount = prevProps.drizzleState.accounts[0];
+		if ((account && !dataKey) || prevAccount !== account) {
 			this.getPending()
 		}
 	}
 
 	getPending = () => {
-		const { account, drizzle } = this.props;
+		const { drizzleState, drizzle } = this.props;
 
-		if (account) {
+		if (drizzleState && drizzleState.accounts) {
 			const contract = drizzle.contracts.P2P;
-			const dataKey = contract.methods["_pendingWithdrawals"].cacheCall(account, { from: account, gas: 3000000 });
+			const dataKey = contract.methods["_pendingWithdrawals"].cacheCall(drizzleState.accounts[0], {
+				from: drizzleState.accounts[0],
+				gas: 3000000
+			});
 
 			this.setState({ dataKey });
 		}
 	}
 
 	pullFunds = () => {
-		const { drizzle, account } = this.props;
+		const { drizzle, drizzleState } = this.props;
 		const contract = drizzle.contracts.P2P;
 
 		contract.methods["pullFunds"].cacheSend({
-			from: account, gas: 3000000
+			from: drizzleState.accounts[0], gas: 3000000
 		});
 	}
 
 	render() {
-		const { drizzleState, account } = this.props;
+		const { drizzleState } = this.props;
 		const { P2P } = this.props.drizzleState.contracts;
 		const { dataKey } = this.state;
 		const funds = P2P._pendingWithdrawals[dataKey];
 		let btnFunds = "";
 
-		let selectAcc = "";
-		if (drizzleState.accounts) {
-			selectAcc = Object.keys(drizzleState.accounts).map((accountId) =>
-				<option
-					key={drizzleState.accounts[accountId]}
-					value={drizzleState.accounts[accountId]}
-					selected={account && account === drizzleState.accounts[accountId]}>Account {accountId}</option>
-			)
-		}
-
 		if (funds && funds.value !== "0") {
 			btnFunds = <button onClick={this.pullFunds}>Get Funds</button>
 		}
+		let addressLength = drizzleState.accounts[0].length
 
 		return (
-			<div>
-				<h4>Account</h4>
-				{selectAcc && <select onChange={this.props.handleChangeAcc}>{selectAcc}</select>}
-				{btnFunds}
+			<div className="py-2">
+				{drizzleState.accounts && (drizzleState.accounts[0].slice(0, 5) + "..." + drizzleState.accounts[0].slice(addressLength - 5, addressLength))}
+				{/* {btnFunds} */}
 			</div>
 		);
 	}

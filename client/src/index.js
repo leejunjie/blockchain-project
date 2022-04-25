@@ -9,6 +9,8 @@ import { Drizzle, generateStore } from "@drizzle/store";
 import { DrizzleContext } from "@drizzle/react-plugin";
 import P2P from "./contracts/P2P.json";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 // let drizzle know what contracts we want
 const options = {
   contracts: [P2P],

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import './App.css';
 // import ReadText from './pages/readText';
 // import SetText from './pages/setText';
@@ -8,8 +9,6 @@ import GetProduct from './pages/getProduct';
 import BuyProduct from './pages/buyProduct';
 
 class App extends Component {
-  state = { account: null }
-
   // set default account
   componentDidMount() {
     const { drizzleState } = this.props;
@@ -38,14 +37,48 @@ class App extends Component {
   //   this.unsubscribe();
   // }
 
-  handleChangeAcc = (e) => {
-    this.setState({ account: e.target.value });
-  }
+  currentPage = ({ isActive }) => ((isActive ? 'text-primary' : 'text-dark') + " px-4 py-2")
 
   render() {
     // if (this.state.loading) return "Loading Drizzle...";
-    return <div className="App">
-      {/* <ReadText
+    return (
+      <BrowserRouter>
+        <div className='container'>
+          <div className='row justify-content-between mb-4'>
+            <div className='col'>
+              <div className='d-flex'>
+                <NavLink to="/" className={this.currentPage}>Marketplace</NavLink>
+                <NavLink to="/sell" className={this.currentPage}>Sell</NavLink>
+              </div>
+            </div>
+            <div className='col'>
+              <div class="d-flex justify-content-end">
+                <Accounts
+                  drizzle={this.props.drizzle}
+                  drizzleState={this.props.drizzleState}
+                />
+              </div>
+            </div>
+          </div>
+          <Routes>
+            <Route path="/" element={
+              <GetProduct
+                drizzle={this.props.drizzle}
+                drizzleState={this.props.drizzleState}
+              />
+            }>
+            </Route>
+          </Routes>
+          {/* <div className='row'>
+            <div className='col-3'></div>
+            <div className='col-9'>
+            </div>
+          </div> */}
+        </div>
+      </BrowserRouter>
+    );
+
+    {/* <ReadText
         drizzle={this.props.drizzle}
         drizzleState={this.props.drizzleState}
       />
@@ -53,7 +86,7 @@ class App extends Component {
         drizzle={this.props.drizzle}
         drizzleState={this.props.drizzleState}
       /> */}
-      <Accounts
+    {/* <Accounts
         drizzle={this.props.drizzle}
         drizzleState={this.props.drizzleState}
         account={this.state.account}
@@ -78,10 +111,8 @@ class App extends Component {
             drizzleState={this.props.drizzleState}
             account={this.state.account}
           />
-        </div>
-      </div>
-
-    </div>;
+        </div> 
+      </div>*/}
   }
 }
 
