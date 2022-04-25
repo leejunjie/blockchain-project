@@ -13,11 +13,11 @@ class GetProduct extends React.Component {
 	}
 
 	removeItem = (id) => {
-		const { drizzle, drizzleState } = this.props;
+		const { drizzle, account } = this.props;
 		const contract = drizzle.contracts.P2P;
 
 		contract.methods["removeItem"].cacheSend(id, {
-			from: drizzleState.accounts[0], gas: 3000000
+			from: account, gas: 3000000
 		});
 	}
 
@@ -37,7 +37,7 @@ class GetProduct extends React.Component {
 							if (item.status === "2") {
 								return "";
 							}
-							return <Link to={'/product?id=' + index} className="col-3 card text-decoration-none text-dark">
+							return <Link to={'/product?id=' + index} key={index} className="col-3 card text-decoration-none text-dark">
 								<div>
 									<img className="w-100" src={item.image || "/logo192.png"} />
 								</div>

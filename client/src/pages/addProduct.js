@@ -8,14 +8,14 @@ class AddProduct extends React.Component {
 	}
 
 	addItem = () => {
-		const { drizzle, drizzleState } = this.props;
+		const { drizzle, account } = this.props;
 		const { name, price, image } = this.state;
 		const contract = drizzle.contracts.P2P;
 
 		const nameToHex = contract.web3.utils.asciiToHex(name);
 		const weiValue = contract.web3.utils.toWei(image, price, "ether");
 		contract.methods["addNewItem"].cacheSend(nameToHex, weiValue, {
-			from: drizzleState.accounts[0], gas: 3000000
+			from: account, gas: 3000000
 		});
 	}
 
@@ -25,27 +25,27 @@ class AddProduct extends React.Component {
 			<>
 				<div className="row mt-5 justify-content-around">
 					<div className="col-auto">
-						<label class="form-label">Name</label>
+						<label className="form-label">Name</label>
 					</div>
 					<div className="col-auto">
-						<input class="form-control" type="text" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} />
+						<input className="form-control" type="text" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} />
 					</div>
 					<div className="col-auto">
-						<label class="form-label">Amount</label>
+						<label className="form-label">Amount</label>
 					</div>
 					<div className="col-auto">
-						<div class="input-group">
-							<input class="form-control" type="number" value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} />
-							<span class="input-group-text">ETH</span>
+						<div className="input-group">
+							<input className="form-control" type="number" value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} />
+							<span className="input-group-text">ETH</span>
 						</div>
 					</div>
 					<div className="col-auto">
-						<button onClick={this.addItem} class="btn btn-primary">Add</button>
+						<button onClick={this.addItem} className="btn btn-primary">Add</button>
 					</div>
 				</div>
 				<div className="row mt-3 justify-content-between">
 					<div className="col-4">
-						<input class="form-control" type="file" accept="image/*" onChange={this.selectedImage} />
+						<input className="form-control" type="file" accept="image/*" onChange={this.selectedImage} />
 					</div>
 					<div className="col-3">
 						{image && <img src={image || ""} className="w-100" />}

@@ -4,9 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 function ViewProduct(props) {
 	const [product, setProduct] = useState(null);
-	const { drizzle, drizzleState } = props;
+	const { drizzle, account } = props;
 	const contract = drizzle.contracts.P2P;
-	const account = drizzleState.accounts[0];
 	const query = new URLSearchParams(window.location.search);
 	const navigate = useNavigate();
 	const id = query.get("id") || "";
@@ -25,7 +24,7 @@ function ViewProduct(props) {
 
 	const removeItem = () => {
 		contract.methods["removeItem"].cacheSend(id, {
-			from: drizzleState.accounts[0], gas: 3000000
+			from: account, gas: 3000000
 		});
 	}
 
@@ -46,7 +45,7 @@ function ViewProduct(props) {
 			</div>
 			<div className="row justify-content-between">
 				<div className="col-12">
-					<p>Seller: {product.seller}</p>
+					<p>Seller: {product.seller === account ? "Me" : product.seller}</p>
 				</div>
 				{product.status != "0" ? <div className="col-12">
 					<div className="d-flex justify-content-center">

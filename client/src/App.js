@@ -10,15 +10,27 @@ import AddProduct from './pages/addProduct';
 import BuyProduct from './pages/buyProduct';
 
 class App extends Component {
+  state = { account: "" }
   // set default account
   componentDidMount() {
     const { drizzleState } = this.props;
-    this.setState({ account: drizzleState.accounts[1] });
+    const self = this;
+
+    this.setState({ account: drizzleState.accounts[0] });
+
+    window.ethereum.on('accountsChanged', function (accounts) {
+      const account = self.state.account;
+      if (accounts[0] !== account) {
+        // self.setState({ account: accounts[0] }); // address become lower case
+        window.location.reload();
+      }
+    });
   }
 
   currentPage = ({ isActive }) => ((isActive ? 'text-primary' : 'text-dark') + " px-4 py-2 text-decoration-none")
 
   render() {
+    const { account } = this.state;
     return (
       <BrowserRouter>
         <div className='container'>
@@ -34,6 +46,7 @@ class App extends Component {
                 <Accounts
                   drizzle={this.props.drizzle}
                   drizzleState={this.props.drizzleState}
+                  account={account}
                 />
               </div>
             </div>
@@ -43,18 +56,21 @@ class App extends Component {
               <GetProduct
                 drizzle={this.props.drizzle}
                 drizzleState={this.props.drizzleState}
+                account={account}
               />
             } />
             <Route exact path='/product' element={
               <ViewProduct
                 drizzle={this.props.drizzle}
                 drizzleState={this.props.drizzleState}
+                account={account}
               />
             } />
             <Route exact path='/sell' element={
               <AddProduct
                 drizzle={this.props.drizzle}
                 drizzleState={this.props.drizzleState}
+                account={account}
               />
             } />
           </Routes>
