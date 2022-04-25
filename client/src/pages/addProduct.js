@@ -1,7 +1,7 @@
 import React from "react";
 
 class AddProduct extends React.Component {
-	state = { name: "", price: "", image: "" };
+	state = { name: "", price: "", image: "", stackId: null };
 
 	selectedImage = (e) => {
 		this.setState({ image: URL.createObjectURL(e.target.files[0]) });
@@ -13,11 +13,21 @@ class AddProduct extends React.Component {
 		const contract = drizzle.contracts.P2P;
 
 		const nameToHex = contract.web3.utils.asciiToHex(name);
-		const weiValue = contract.web3.utils.toWei(image, price, "ether");
-		contract.methods["addNewItem"].cacheSend(nameToHex, weiValue, {
+		const weiValue = contract.web3.utils.toWei(price, "ether");
+		const stackId = contract.methods["addNewItem"].cacheSend(image, nameToHex, weiValue, {
 			from: account, gas: 3000000
 		});
+		this.setState({ stackId });
 	}
+
+	getTxStatus = () => {
+		const { transactions, transactionStack } = this.props.drizzleState;
+		const txHash = transactionStack[this.state.stackId];
+
+		if (!txHash) return null;
+
+		return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
+	};
 
 	render() {
 		const { image } = this.state;
@@ -49,6 +59,9 @@ class AddProduct extends React.Component {
 					</div>
 					<div className="col-3">
 						{image && <img src={image || ""} className="w-100" />}
+					</div>
+					<div className="col-12">
+						<p>{this.getTxStatus()}</p>
 					</div>
 				</div>
 			</>
