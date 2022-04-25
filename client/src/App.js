@@ -4,8 +4,9 @@ import './App.css';
 // import ReadText from './pages/readText';
 // import SetText from './pages/setText';
 import Accounts from './pages/accounts';
-import AddProduct from './pages/addProduct';
 import GetProduct from './pages/getProduct';
+import ViewProduct from './pages/viewProduct';
+import AddProduct from './pages/addProduct';
 import BuyProduct from './pages/buyProduct';
 
 class App extends Component {
@@ -15,32 +16,10 @@ class App extends Component {
     this.setState({ account: drizzleState.accounts[1] });
   }
 
-  // state = { loading: true, drizzleState: null };
-
-  // componentDidMount() {
-  //   const { drizzle } = this.props;
-
-  //   // subscribe to changes in the store
-  //   this.unsubscribe = drizzle.store.subscribe(() => {
-
-  //     // every time the store updates, grab the state from drizzle
-  //     const drizzleState = drizzle.store.getState();
-
-  //     // check to see if it's ready, if so, update local component state
-  //     if (drizzleState.drizzleStatus.initialized) {
-  //       this.setState({ loading: false, drizzleState });
-  //     }
-  //   });
-  // }
-
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
-
-  currentPage = ({ isActive }) => ((isActive ? 'text-primary' : 'text-dark') + " px-4 py-2")
+  currentPage = ({ isActive }) => ((isActive ? 'text-primary' : 'text-dark') + " px-4 py-2 text-decoration-none")
 
   render() {
-    // if (this.state.loading) return "Loading Drizzle...";
+    console.log(this.props)
     return (
       <BrowserRouter>
         <div className='container'>
@@ -52,7 +31,7 @@ class App extends Component {
               </div>
             </div>
             <div className='col'>
-              <div class="d-flex justify-content-end">
+              <div className="d-flex justify-content-end">
                 <Accounts
                   drizzle={this.props.drizzle}
                   drizzleState={this.props.drizzleState}
@@ -61,19 +40,19 @@ class App extends Component {
             </div>
           </div>
           <Routes>
-            <Route path="/" element={
+            <Route exact path="/" element={
               <GetProduct
                 drizzle={this.props.drizzle}
                 drizzleState={this.props.drizzleState}
               />
-            }>
-            </Route>
+            } />
+            <Route exact path='/product' element={
+              <ViewProduct
+                drizzle={this.props.drizzle}
+                drizzleState={this.props.drizzleState}
+              />
+            } />
           </Routes>
-          {/* <div className='row'>
-            <div className='col-3'></div>
-            <div className='col-9'>
-            </div>
-          </div> */}
         </div>
       </BrowserRouter>
     );
