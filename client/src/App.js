@@ -25,13 +25,6 @@ class App extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    console.log(this.props)
-    if (this.props.location !== prevProps.location) {
-      this.onRouteChanged();
-    }
-  }
-
   currentPage = ({ isActive }) => ((isActive ? 'text-primary' : 'text-dark') + " px-4 py-2 text-decoration-none")
 
   render() {

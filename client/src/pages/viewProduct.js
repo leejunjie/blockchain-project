@@ -60,8 +60,6 @@ function ViewProduct(props) {
 		});
 	};
 
-	if (product) console.log(product.status, typeof product.status)
-
 	return (product) ? (
 		<div className="row g-0" style={{ margin: "-1rem" }}>
 			<div className="col-md-4">
