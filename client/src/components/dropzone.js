@@ -69,7 +69,7 @@ function Basic(props) {
 			<div {...getRootProps({ className: 'dropzone ' + className, style })}>
 				<input {...getInputProps()} />
 				{acceptedFiles.length
-					? acceptedFiles.map(file => (<img src={URL.createObjectURL(file)} alt={file.name} style={{ height: 150 }} />))
+					? acceptedFiles.map(file => (<img src={URL.createObjectURL(file)} alt={file.name} key={file.name} style={{ height: 150 }} />))
 					: <p className='my-auto text-center'>{dragNDropText}</p>
 				}
 			</div>
