@@ -2,7 +2,7 @@ import React from "react";
 import ComponentDropzone from "../components/dropzone";
 
 class AddProduct extends React.Component {
-	state = { name: "", price: "", desc: "", imageFile: "", stackId: null };
+	state = { name: "", price: "", imageFile: "", desc: "", stackId: null };
 
 	selectedImage = (imageFiles) => {
 		this.setState({ imageFile: imageFiles[0] })
@@ -48,9 +48,7 @@ class AddProduct extends React.Component {
 		if (!txHash) return null;
 		// clear
 		if (transactions[txHash] && transactions[txHash].status === "success" && this.state.name) {
-			this.setState({ name: "", price: "", image: { file: "", blob: "", base64: "" } }, () => {
-				alert("Add product successful!");
-			});
+			this.setState({ name: "", price: "", imageFile: "", desc: "" });
 		}
 
 		return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;

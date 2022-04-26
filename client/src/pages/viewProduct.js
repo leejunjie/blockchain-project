@@ -68,7 +68,7 @@ function ViewProduct(props) {
 				<div
 					className="h-100 rounded overflow-hidden bg-secondary"
 					style={{
-						background: `url(${product.image || "/logo192.png"})`,
+						background: `url(${product.image.includes("uploadImage") ? product.image : "/logo192.png"})`,
 						backgroundPosition: "center",
 						backgroundSize: "cover"
 					}}

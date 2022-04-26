@@ -69,7 +69,7 @@ class GetProduct extends React.Component {
 									<div className="d-flex justify-content-center rounded-top overflow-hidden bg-secondary" style={{ height: 150 }}>
 										<img
 											className="h-100"
-											src={item.image || "/logo192.png"}
+											src={item.image}
 											alt={contract.web3.utils.hexToAscii(item.name).replace(/\u0000/g, '')}
 											onError={(e) => { if (e.target.src != "/logo192.png") e.target.src = "/logo192.png" }}
 										/>
