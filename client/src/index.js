@@ -36,7 +36,11 @@ root.render(
           const { drizzle, drizzleState, initialized } = drizzleContext;
 
           if (!initialized) {
-            return "Loading...";
+            return <div className="d-flex justify-content-center" style={{ minHeight: 550 }}>
+              <div className="spinner-border my-auto" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>;
           }
 
           return (

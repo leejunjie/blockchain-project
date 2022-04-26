@@ -30,24 +30,28 @@ class App extends Component {
     const { account } = this.state;
     return (
       <BrowserRouter>
-        <div className='container'>
-          <div className='row justify-content-between mb-4'>
-            <div className='col'>
-              <div className='d-flex'>
-                <NavLink to="/" className={this.currentPage}>Marketplace</NavLink>
-                <NavLink to="/sell" className={this.currentPage}>Sell</NavLink>
+        <div className='container-fluid shadow-sm bg-light mb-5'>
+          <div className='container'>
+            <div className='row justify-content-between align-items-center mb-4'>
+              <div className='col'>
+                <div className='d-flex'>
+                  <NavLink to="/" className={this.currentPage}>Marketplace</NavLink>
+                  <NavLink to="/sell" className={this.currentPage}>Sell</NavLink>
+                </div>
               </div>
-            </div>
-            <div className='col'>
-              <div className="d-flex justify-content-end">
-                <Accounts
-                  drizzle={this.props.drizzle}
-                  drizzleState={this.props.drizzleState}
-                  account={account}
-                />
+              <div className='col'>
+                <div className="d-flex justify-content-end">
+                  <Accounts
+                    drizzle={this.props.drizzle}
+                    drizzleState={this.props.drizzleState}
+                    account={account}
+                  />
+                </div>
               </div>
             </div>
           </div>
+        </div>
+        <div className='container'>
           <Routes>
             <Route exact path="/" element={
               <GetProduct
