@@ -1,18 +1,19 @@
 import React from "react";
 
 class AddProduct extends React.Component {
-	state = { name: "", price: "", image: { blob: "", base64: "" }, stackId: null };
+	state = { name: "", price: "", image: { file: "", blob: "", base64: "" }, stackId: null };
 
 	selectedImage = (e) => {
-		const image = e.target.files[0];
-		const imgBlob = URL.createObjectURL(image);
+		const file = e.target.files[0];
+		const blob = URL.createObjectURL(file);
 
 		let reader = new FileReader()
-		reader.readAsDataURL(e.target.files[0])
+		reader.readAsDataURL(file)
 		reader.onload = () => {
 			this.setState({
 				image: {
-					blob: imgBlob,
+					file,
+					blob,
 					base64: reader.result
 				}
 			})
@@ -25,16 +26,35 @@ class AddProduct extends React.Component {
 	addItem = () => {
 		const { drizzle, account } = this.props;
 		const { name, price, image } = this.state;
-		const { blob, base64 } = image;
+		const { file } = image;
 		const contract = drizzle.contracts.P2P;
+		const self = this;
 
-		const nameToHex = contract.web3.utils.asciiToHex(name);
-		const weiValue = contract.web3.utils.toWei(price, "ether");
-		const stackId = contract.methods["addNewItem"].cacheSend(image, nameToHex, weiValue, {
-			from: account,
-			gas: 3000000
-		});
-		this.setState({ stackId });
+		const formData = new FormData()
+		formData.append('image', file)
+		fetch('http://127.0.0.1:3001/upload/image', {
+			method: 'POST',
+			body: formData
+		})
+			.then(response => response.json())
+			.then(data => {
+				if (data.status === "success") {
+					const nameToHex = contract.web3.utils.asciiToHex(name);
+					const weiValue = contract.web3.utils.toWei(price, "ether");
+					const stackId = contract.methods["addNewItem"].cacheSend(data.path, nameToHex, weiValue, {
+						from: account,
+						gas: 3000000
+					});
+					self.setState({ stackId });
+				} else {
+					alert("Please try again later")
+				}
+			})
+			.catch(error => {
+				console.error(error)
+			})
+
+
 	}
 
 	getTxStatus = () => {
@@ -42,6 +62,12 @@ class AddProduct extends React.Component {
 		const txHash = transactionStack[this.state.stackId];
 
 		if (!txHash) return null;
+		// clear
+		if (transactions[txHash] && transactions[txHash].status === "success" && this.state.name) {
+			this.setState({ name: "", price: "", image: { file: "", blob: "", base64: "" } }, () => {
+				alert("Add product successful!");
+			});
+		}
 
 		return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
 	};
