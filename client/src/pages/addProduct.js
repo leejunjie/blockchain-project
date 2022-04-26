@@ -25,7 +25,7 @@ class AddProduct extends React.Component {
 				if (data.status === "success") {
 					const nameToHex = contract.web3.utils.asciiToHex(name);
 					const weiValue = contract.web3.utils.toWei(price, "ether");
-					const stackId = contract.methods["addNewItem"].cacheSend(nameToHex, weiValue, desc, data.path, {
+					const stackId = contract.methods["addNewItem"].cacheSend(nameToHex, weiValue, data.path, desc, {
 						from: account,
 						gas: 3000000
 					});
@@ -85,10 +85,8 @@ class AddProduct extends React.Component {
 							onDrop={this.selectedImage}
 						/>
 					</div>
-					<div>
-						<p>{this.getTxStatus()}</p>
-					</div>
 					<div className="d-flex float-right" style={{ marginRight: "calc(var(--bs-gutter-x)/ -2)" }}>
+						<p className="text-break mr-3">{this.getTxStatus()}</p>
 						<button onClick={this.addItem} className="btn btn-primary">Add</button>
 					</div>
 				</div>

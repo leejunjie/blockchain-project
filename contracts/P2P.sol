@@ -9,18 +9,20 @@ contract P2P {
     }
 
     struct Item {
-        string image;
         bytes32 name;
         uint256 price;
+        string image;
+        string description;
         address seller;
         ItemStatus status;
     }
 
     event ItemAdded(
         uint256 id,
-        string image,
         bytes32 name,
         uint256 price,
+        string image,
+        string description,
         address seller
     );
     event ItemPurchased(uint256 itemID, address buyer, address seller);
@@ -36,15 +38,17 @@ contract P2P {
     }
 
     function addNewItem(
-        string memory image,
         bytes32 name,
-        uint256 price
+        uint256 price,
+        string memory image,
+        string memory description
     ) public returns (uint256 itemID) {
         _items.push(
             Item({
-                image: image,
                 name: name,
                 price: price,
+                image: image,
+                description: description,
                 seller: msg.sender,
                 status: ItemStatus.active
             })
@@ -52,7 +56,7 @@ contract P2P {
 
         uint256 id = _items.length - 1;
 
-        emit ItemAdded(id, image, name, price, msg.sender);
+        emit ItemAdded(id, name, price, image, description, msg.sender);
 
         return id;
     }
@@ -62,18 +66,20 @@ contract P2P {
         view
         onlyIfItemExists(itemID)
         returns (
-            string memory image,
             bytes32 name,
             uint256 price,
+            string memory image,
+            string memory description,
             address seller,
             uint256 status
         )
     {
         Item storage item = _items[itemID];
         return (
-            item.image,
             item.name,
             item.price,
+            item.image,
+            item.description,
             item.seller,
             uint256(item.status)
         );

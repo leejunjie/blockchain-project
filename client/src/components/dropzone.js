@@ -6,7 +6,7 @@ const baseStyle = {
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
-	padding: '50px 20px',
+	padding: '30px 20px',
 	borderWidth: 2,
 	borderRadius: 2,
 	borderColor: '#eeeeee',
