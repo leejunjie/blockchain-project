@@ -45,7 +45,7 @@ class GetProduct extends React.Component {
 
 		return (
 			<div className='row'>
-				<div className='col-3'>
+				<div className='col-2 border-right' style={{ minHeight: 550 }}>
 					{filters.map((checkbox, index) => (
 						<div className="form-check" key={checkbox.title}>
 							<input className="form-check-input" type="checkbox" name="filterCheckbox" onChange={this.handleCheckbox} checked={filter == null ? true : filter.includes(index)} id={"checkbox" + index} />
@@ -54,19 +54,25 @@ class GetProduct extends React.Component {
 							</label>
 						</div>
 					))}
+					<p className="mt-5">The point of NFTs depends on whether you’re an artist or a buyer.</p>
 				</div>
-				<div className='col-9'>
-					<div className="row">
+				<div className='col-10'>
+					<div className="row overflow-auto" style={{ maxHeight: 600 }}>
 						{items && items.value && items.value.map((item, index) => {
 							if (item.status === "2" || (filter != null && !filter.includes(Number(item.status)))) {
 								return "";
 							}
-							return <Link to={'/product?id=' + index} key={index} className="col-3 text-decoration-none text-dark">
-								<div className="card p-2">
-									<div>
-										<img className="w-100" src={item.image || "/logo192.png"} />
+							return <Link to={'/product?id=' + index} key={index} className="col-3 text-decoration-none text-dark mb-4">
+								<div className="card">
+									<div className="d-flex justify-content-center rounded-top overflow-hidden bg-secondary" style={{ height: 150 }}>
+										<img
+											className="h-100"
+											src={item.image || "/logo192.png"}
+											alt={contract.web3.utils.hexToAscii(item.name).replace(/\u0000/g, '')}
+											onError={(e) => { if (e.target.src != "/logo192.png") e.target.src = "/logo192.png" }}
+										/>
 									</div>
-									<div className="d-flex justify-content-between">
+									<div className="d-flex justify-content-between p-2">
 										<p className="mb-0">{contract.web3.utils.hexToAscii(item.name).replace(/\u0000/g, '')}</p>
 										<p className="mb-0">{contract.web3.utils.fromWei(item.price, "ether")} ETH</p>
 									</div>
