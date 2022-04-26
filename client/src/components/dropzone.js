@@ -65,12 +65,12 @@ function Basic(props) {
 	// ));
 
 	return (
-		<section className="container">
+		<section className="container px-0">
 			<div {...getRootProps({ className: 'dropzone ' + className, style })}>
 				<input {...getInputProps()} />
 				{acceptedFiles.length
 					? acceptedFiles.map(file => (<img src={URL.createObjectURL(file)} alt={file.name} style={{ height: 150 }} />))
-					: <p className='my-auto'>{dragNDropText}</p>
+					: <p className='my-auto text-center'>{dragNDropText}</p>
 				}
 			</div>
 		</section>

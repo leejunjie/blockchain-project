@@ -63,35 +63,40 @@ function ViewProduct(props) {
 	if (product) console.log(product.status, typeof product.status)
 
 	return (product) ? (
-		<div>
-			<div className="row justify-content-center">
-				<div className="col-6">
-					<img src={product.image || "/logo192.png"} className="w-100" />
+		<div className="row g-0" style={{ margin: "-1rem" }}>
+			<div className="col-md-4">
+				<div
+					className="h-100 rounded overflow-hidden bg-secondary"
+					style={{
+						background: `url(${product.image || "/logo192.png"})`,
+						backgroundPosition: "center",
+						backgroundSize: "cover"
+					}}
+				>
+					{/* <img
+						className="img-fluid"
+						src={product.image || "/logo192.png"}
+						alt={contract.web3.utils.hexToAscii(product.name).replace(/\u0000/g, '')}
+						onError={(e) => { if (e.target.src != "/logo192.png") e.target.src = "/logo192.png" }}
+					/> */}
 				</div>
 			</div>
-			<div className="row justify-content-between mt-3">
-				<div className="col-6">
-					<h4>{contract.web3.utils.hexToAscii(product.name).replace(/\u0000/g, '')}</h4>
-				</div>
-				<div className="col-6 text-right">
-					<h5 className="">{contract.web3.utils.fromWei(product.price, "ether")} ETH</h5>
-				</div>
-			</div>
-			<div className="row justify-content-between">
-				<div className="col-12">
-					<p>Seller: {product.seller === account ? "Me" : product.seller}</p>
-				</div>
-				<div className="col-12 justify-content-end">
+			<div className="col-md-8">
+				<div className="card-body">
+					<h4 className="card-title mb-4">{contract.web3.utils.hexToAscii(product.name).replace(/\u0000/g, '')}</h4>
+					<h5 className="card-title mb-3">{contract.web3.utils.fromWei(product.price, "ether")} ETH</h5>
+					<p className="card-text mb-3">Owned by {product.seller}</p>
+					<p className="card-text mb-5">{product.description}</p>
 					{product.status != "0"
 						? product.status === "1"
-							? <p className="text-success text-right">Sold</p>
-							: <p className="text-dark text-right">Removed</p>
+							? <p className="text-success">Sold</p>
+							: <p className="text-dark">Removed</p>
 						: product.seller === account
 							? <button onClick={removeItem} className="btn btn-danger">Remove</button>
 							: !buyTxHash && <button onClick={buyItem} className="btn btn-primary">Buy</button>
 					}
+					{buyTxHash && <h5 className="text-break">Tx Hash:{buyTxHash}</h5>}
 				</div>
-				{buyTxHash && <div className="col-12"><h5>Tx Hash: {buyTxHash}</h5></div>}
 			</div>
 		</div>
 	) : <div></div>;
